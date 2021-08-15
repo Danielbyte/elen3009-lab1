@@ -206,6 +206,23 @@ bool Screen::checkRange( string::size_type row, string::size_type col ) const
 	return true;
 }
 
+void Screen::create_square(string::size_type row, string::size_type col, string::size_type length)
+{
+    bool verify = checkRange (row, col);
+    if (verify)
+    {
+        move(row, col);
+        for (string::size_type i = 1; i < 4*length; i++)
+        {
+            set('X');
+            if (i<length){down();}
+            else if(i>3*length && i<4*length){back();}
+            else if(i>2*length && i<3*length){up();}
+            else if(i>length && i<2*length){forward();}
+        }
+    }
+}
+
 string::size_type Screen::remainingSpace() const
 {   // includes current position
 	auto size = width_ * height_;
