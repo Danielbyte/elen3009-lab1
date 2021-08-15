@@ -12,6 +12,8 @@ using namespace std;
 // *size* of any string that can be held by the string class as well as any index into
 // the string.
 
+enum class Direction {HOME, FORWARD, BACK, UP, DOWN, END};
+
 class Screen {
 public:
 	// Screen's constructor
@@ -36,6 +38,7 @@ public:
 	void down();
 	// move the cursor to the specified row and column
 	void move(string::size_type row, string::size_type col);
+	void move (Direction dir); // overload move function
 
 	// get the character at the cursor's current position
 	char get() const { return _screen[cursor_]; }
@@ -55,12 +58,12 @@ public:
 	void display() const;
 	// check whether the specified co-ordinates lie within the screen
 	bool checkRange(string::size_type row, string::size_type col) const;
-
+    void create_square (string::size_type row, string::size_type col, string::size_type length);
 private:
 	// constants
 	// 0 represents the top-left screen element
 	const string::size_type TOP_LEFT = 0;
-	
+
 	// private member functions
 	string::size_type remainingSpace() const;
 	string::size_type row() const;
@@ -71,13 +74,33 @@ private:
 	// number of Screen rows
 	string::size_type height_;
 	// number of Screen columns
-	string::size_type width_;	
+	string::size_type width_;
 	// default position of the Screen's cursor, use in-class initilisation
 	string::size_type cursor_ = TOP_LEFT;
 	// the Screen's data is stored as a string
 	string _screen;
+
+	bool verify;
+	string::size_type length;
 };
 
 
 #endif
+
+//Explanations of 3 situations which const is used.
+//1. string::size_type height() const { return height_; }
+// const use in the above means that height () function cannot modify anything in the class.
+
+//2. void set( const string& s );
+// const use in the above means the function cannot modify the passed in parameter.
+
+//3. const string::size_type TOP_LEFT = 0;
+// const use in the above means that the variable is set to a fixed value an cannot be
+// anywhere in the class.
+
+//Meaning of string class's at member function:
+// void reSize( string::size_type height, string::size_type width, char bkground = '#');
+// string::size_type is of an unsigned integer type.
+// This means that parameters height and width are of type int(unsigned).
+// This is good for information hiding in the class.
 

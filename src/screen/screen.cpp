@@ -34,7 +34,8 @@ void Screen::up()
 {   // move cursor_ up one row of screen
 	// do not wrap around
 	if ( row() == 1 ) // at top?
-		cerr << "Screen::up - Cannot wrap around in a vertical direction" << endl;
+		//cerr << "Screen::up - Cannot wrap around in a vertical direction" << endl;
+		cursor_ = cursor_ +((height_ - 1)*width_);
 	else
 		cursor_ -= width_;
 
@@ -45,7 +46,8 @@ void Screen::down()
 {   // move cursor_ down one row of screen
 	// do not wrap around
 	if ( row() == height_ ) // at bottom?
-		cerr << "Screen::down - Cannot wrap around in a vertical direction" << endl;
+		//cerr << "Screen::down - Cannot wrap around in a vertical direction" << endl;
+		cursor_ = cursor_ - ((height_ - 1)*width_);
 	else
 		cursor_ += width_;
 
@@ -64,6 +66,45 @@ void Screen::move( string::size_type row, string::size_type col )
 
 	return;
 }
+
+void Screen::move(Direction dir)
+{
+    switch (dir)
+    {
+    case Direction::BACK:
+        back();
+        break;
+
+    case Direction::DOWN:
+        down();
+        break;
+
+    case Direction::END:
+        end();
+        break;
+
+    case Direction::FORWARD:
+        forward();
+        break;
+
+    case Direction::HOME:
+        home();
+        break;
+
+    case Direction::UP:
+        up();
+        break;
+    }
+}
+
+//The above function is necessary for clients of this class.
+//Reason: (improved user experience)
+// This provides a more comprehensive and more convenient
+// way for the clients in a manner that they just to call
+// this function every time they need to move up, down,
+// forward, backwards, end and home instead of calling
+// each of this function every time. This reduces errors
+// as well.
 
 char Screen::get( string::size_type row, string::size_type col )
 {
@@ -165,6 +206,23 @@ bool Screen::checkRange( string::size_type row, string::size_type col ) const
 	return true;
 }
 
+void Screen::create_square(string::size_type row, string::size_type col, string::size_type length)
+{
+    bool verify = checkRange (row, col);
+    if (verify)
+    {
+        move(row, col);
+        for (string::size_type i = 1; i < 4*length; i++)
+        {
+            set('X');
+            if (i<length){down();}
+            else if(i>3*length && i<4*length){back();}
+            else if(i>2*length && i<3*length){up();}
+            else if(i>length && i<2*length){forward();}
+        }
+    }
+}
+
 string::size_type Screen::remainingSpace() const
 {   // includes current position
 	auto size = width_ * height_;
@@ -175,4 +233,6 @@ string::size_type Screen::row() const
 {   // return current row
 	return (cursor_ + width_)/width_;
 }
+
+//
 
