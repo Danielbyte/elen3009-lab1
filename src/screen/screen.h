@@ -12,6 +12,8 @@ using namespace std;
 // *size* of any string that can be held by the string class as well as any index into
 // the string.
 
+enum class Direction {HOME, FORWARD, BACK, UP, DOWN, END};
+
 class Screen {
 public:
 	// Screen's constructor
@@ -36,6 +38,7 @@ public:
 	void down();
 	// move the cursor to the specified row and column
 	void move(string::size_type row, string::size_type col);
+	void move (Direction dir); // overload move function
 
 	// get the character at the cursor's current position
 	char get() const { return _screen[cursor_]; }

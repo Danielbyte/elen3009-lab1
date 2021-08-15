@@ -65,6 +65,45 @@ void Screen::move( string::size_type row, string::size_type col )
 	return;
 }
 
+void Screen::move(Direction dir)
+{
+    switch (dir)
+    {
+    case Direction::BACK:
+        back();
+        break;
+
+    case Direction::DOWN:
+        down();
+        break;
+
+    case Direction::END:
+        end();
+        break;
+
+    case Direction::FORWARD:
+        forward();
+        break;
+
+    case Direction::HOME:
+        home();
+        break;
+
+    case Direction::UP:
+        up();
+        break;
+    }
+}
+
+//The above function is necessary for clients of this class.
+//Reason: (improved user experience)
+// This provides a more comprehensive and more convenient
+// way for the clients in a manner that they just to call
+// this function every time they need to move up, down,
+// forward, backwards, end and home instead of calling
+// each of this function every time. This reduces errors
+// as well.
+
 char Screen::get( string::size_type row, string::size_type col )
 {
 	// position cursor_
@@ -175,4 +214,6 @@ string::size_type Screen::row() const
 {   // return current row
 	return (cursor_ + width_)/width_;
 }
+
+//
 
