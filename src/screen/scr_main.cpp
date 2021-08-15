@@ -4,29 +4,64 @@
 
 using namespace std;
 
+void draw_row (Screen& myScreen)
+{
+    for (auto i = 0; i < 11; i++)
+    {
+        if (i%2 == 0)
+        {
+            myScreen.set('*');
+        }
+        else
+            myScreen.forward();
+    }
+}
+
+void first_column (Screen& myScreen)
+{
+    for (auto i = 0; i < 6; i++)
+    {
+
+            if (i%2 != 0)
+            {
+                myScreen.set('*');
+                // myScreen.down();
+            }
+            else
+                myScreen.down();
+
+    }
+}
+
+void last_row (Screen& myScreen)
+{
+    for (auto i = 0; i < 11; i++)
+    {
+        if (i%2 == 0)
+        {
+            myScreen.set('*');
+        }
+        else
+            myScreen.back();
+    }
+}
+
+
 int main()
 {
-	auto myScreen = Screen{6,6};
-	myScreen.forward();
-	myScreen.set('*');
-	myScreen.down();
-	myScreen.set('*');
-	myScreen.move(3,3);
-	myScreen.set("---");
+    auto myScreen = Screen{6,6};
 
-	myScreen.display();
-	cout << endl;
+    myScreen.clear(' ');
+    draw_row (myScreen);
+    myScreen.home(); // reset cursor to top left corner
+    first_column (myScreen);
+    draw_row(myScreen);
+    myScreen.down();
+    myScreen.set('*');
+    myScreen.down();
+    last_row(myScreen);
+    myScreen.display();
 
-	myScreen.reSize(16,16);
-	myScreen.display();
-	myScreen.clear(' ');
-
-	myScreen.move(7,7);
-	myScreen.set("BIG");
-	myScreen.move(8,5);
-	myScreen.set("SCREEN");
-	myScreen.display();
-
-	return 0;
+    return 0;
 }
 
